@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async (token) => {
     try {
-      const response = await axios.get('http://api.myvrloan.com/api/auth/me', {
+      const response = await axios.get('https://api.myvrloan.com/api/auth/me', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUser(response.data);
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://api.myvrloan.com/api/auth/login', {
+      const response = await axios.post('https://api.myvrloan.com/api/auth/login', {
         email,
         password
       });

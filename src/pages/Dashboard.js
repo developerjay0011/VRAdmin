@@ -15,7 +15,7 @@ export default function Dashboard() {
   const fetchInquiries = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://api.myvrloan.com/api/inquiries', {
+      const response = await axios.get('https://api.myvrloan.com/api/inquiries', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setInquiries(response.data);
@@ -30,7 +30,7 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem('token');
       await axios.patch(
-        `http://api.myvrloan.com/api/inquiries/${id}`,
+        `https://api.myvrloan.com/api/inquiries/${id}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -44,7 +44,7 @@ export default function Dashboard() {
     if (window.confirm('Are you sure you want to delete this inquiry?')) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`http://api.myvrloan.com/api/inquiries/${id}`, {
+        await axios.delete(`https://api.myvrloan.com/api/inquiries/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchInquiries();
