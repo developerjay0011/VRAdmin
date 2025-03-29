@@ -1,15 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
+import { 
+  Box, 
+  Button, 
+  Typography, 
+  Grid, 
+  Card, 
+  CardContent, 
+  IconButton, 
+  Chip 
+} from '@mui/material';
+import { 
+  ContactPage as ContactIcon, 
+  TrendingUp as TrendingUpIcon, 
+  AccessTime as AccessTimeIcon, 
+  ContactMail as ContactMailIcon 
+} from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState('all');
+  const [stats, setStats] = useState({
+    totalContacts: 0,
+    newContacts: 0,
+    todayContacts: 0,
+  });
   const { logout } = useAuth();
 
   useEffect(() => {
     fetchInquiries();
+    fetchStats();
   }, []);
 
   const fetchInquiries = async () => {
@@ -23,6 +46,19 @@ export default function Dashboard() {
       console.error('Error fetching inquiries:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const response = await axios.get('https://api.myvrloan.com/api/contacts/stats', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      setStats(response.data);
+    } catch (error) {
+      console.error('Error fetching stats:', error);
     }
   };
 
@@ -79,6 +115,27 @@ export default function Dashboard() {
     });
   };
 
+  const statCards = [
+    {
+      title: 'Total Contacts',
+      value: stats.totalContacts,
+      icon: <ContactIcon sx={{ fontSize: 40 }} />,
+      color: 'primary.main',
+    },
+    {
+      title: 'New Inquiries',
+      value: stats.newContacts,
+      icon: <TrendingUpIcon sx={{ fontSize: 40 }} />,
+      color: '#2e7d32',
+    },
+    {
+      title: "Today's Contacts",
+      value: stats.todayContacts,
+      icon: <AccessTimeIcon sx={{ fontSize: 40 }} />,
+      color: '#ed6c02',
+    },
+  ];
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -91,24 +148,46 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Loan Inquiries</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={logout}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <Box sx={{ p: 3 }}>
+      {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
+        <Typography variant="h4">Dashboard</Typography>
+        <Button onClick={logout} variant="outlined" color="error">
+          Logout
+        </Button>
+      </Box> */}
+
+      {/* <Grid container spacing={3}>
+        {statCards.map((stat) => (
+          <Grid item xs={12} sm={6} md={4} key={stat.title}>
+            <Card>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Box sx={{ color: stat.color, mr: 2 }}>{stat.icon}</Box>
+                  <Typography variant="h6">{stat.title}</Typography>
+                </Box>
+                <Typography variant="h3" component="div">
+                  {stat.value}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+        <Grid item xs={12} sm={6} md={4}>
+          <Link to="/contacts" style={{ textDecoration: 'none' }}>
+            <Card sx={{ height: '100%', cursor: 'pointer', '&:hover': { boxShadow: 6 } }}>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <ContactMailIcon sx={{ fontSize: 40, color: 'primary.main', mr: 2 }} />
+                  <Typography variant="h6">Contact Inquiries</Typography>
+                </Box>
+                <Typography color="text.secondary">
+                  View and manage contact form submissions
+                </Typography>
+              </CardContent>
+            </Card>
+          </Link>
+        </Grid>
+      </Grid> */}
 
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         {/* Stats Section */}
@@ -247,6 +326,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-    </div>
+    </Box>
   );
 }
