@@ -3,11 +3,8 @@ import axios from 'axios';
 import {
   Box,
   Typography,
-  IconButton,
-  Chip,
   Alert,
 } from '@mui/material';
-import { Delete as DeleteIcon, Visibility as ViewIcon } from '@mui/icons-material';
 import { format } from 'date-fns';
 
 export default function ContactsPage() {
@@ -69,9 +66,12 @@ export default function ContactsPage() {
 
   if (loading) {
     return (
-      <Box sx={{ p: 3, textAlign: 'center' }}>
-        <Typography>Loading contacts...</Typography>
-      </Box>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-2 text-gray-500">Loading...</p>
+        </div>
+      </div>
     );
   }
 
