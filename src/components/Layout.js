@@ -18,7 +18,8 @@ import {
 import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
-  ContactPage as ContactIcon,
+  ContactPhone as ContactsIcon,
+  AccountBalance as LoansIcon,
   Logout as LogoutIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
@@ -27,7 +28,8 @@ const drawerWidth = 240;
 
 const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
-  { text: 'Contacts', icon: <ContactIcon />, path: '/contacts' },
+  { text: 'Contacts', icon: <ContactsIcon />, path: '/contacts' },
+  { text: 'Loans', icon: <LoansIcon />, path: '/loans' },
 ];
 
 export default function Layout({ children }) {

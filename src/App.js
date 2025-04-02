@@ -8,6 +8,7 @@ import Contacts from './pages/contacts/index.js';
 import Layout from './components/Layout';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import theme from './theme';
+import Loans from './pages/loans/index.js';
 
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -27,6 +28,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Dashboard />
+                </PrivateRoute>
+              }
+            />
+             <Route
+              path="/loans"
+              element={
+                <PrivateRoute>
+                  <Loans />
                 </PrivateRoute>
               }
             />
